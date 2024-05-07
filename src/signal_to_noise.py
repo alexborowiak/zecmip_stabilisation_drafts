@@ -400,7 +400,8 @@ def signal_to_noise(window:int, da:xr.DataArray, da_for_noise:Optional[xr.DataAr
     return sn_da
 
 
-def __calculate_multi_window_signal_to_noise(windows:Tuple[int], parallel:bool=False, *args, **kwargs)->List[xr.DataArray]:
+def __calculate_multi_window_signal_to_noise(windows:Tuple[int], parallel:bool=False, *args, **kwargs
+                                            )->List[xr.DataArray]:
     
     to_concat = []
     logger.info(f'{__calculate_multi_window_signal_to_noise.__name__} - {windows=}')
@@ -538,8 +539,8 @@ def multiwindow_signal_to_nosie_and_bounds(
     utils.change_logging_level(logginglevel)
     # This is to be slotted into sn_multi_window
     sn_kwargs = dict(windows=windows, start_window=start_window, end_window=end_window, step_window=step_window,
-                     rolling_noise=rolling_noise, method=method, time_slice=time_slice, logginglevel=logginglevel, center=center, 
-                    return_all=return_all)
+                     rolling_noise=rolling_noise, method=method, time_slice=time_slice, logginglevel=logginglevel,
+                     center=center, return_all=return_all)
     logger.info(f'{sn_kwargs=}')
     
     print('\nExperiment\n--------\n', end='')
@@ -556,7 +557,8 @@ def multiwindow_signal_to_nosie_and_bounds(
     control_sn = control_sn.unify_chunks().persist()
     experiment_da_sn = experiment_da_sn.unify_chunks().persist()
     print('Calculating bounds')
-    lower_bound, upper_bound = calculate_upper_and_lower_bounds(control_sn, logginglevel=logginglevel, lower_bound=lower_bound, upper_bound=upper_bound)  
+    lower_bound, upper_bound = calculate_upper_and_lower_bounds(control_sn, logginglevel=logginglevel,
+                                                                lower_bound=lower_bound, upper_bound=upper_bound)  
     
     if isinstance(experiment_da_sn, xr.DataArray): experiment_da_sn.to_dataset(name='signal_to_noise')
     

@@ -2,9 +2,11 @@ import os
 from typing import NamedTuple
 
 import numpy as np
-
+PHD_ROOT_DIR = '/g/data/w40/ab2313/PhD'
 ROOT_DIR = '/g/data/w40/ab2313/zecmip_stabilisation_drafts'
 ZECMIP_DIR = '/g/data/oi10/replicas/CMIP6/C4MIP'
+ZECMIP_LOCAL_DIR = os.path.join(PHD_ROOT_DIR, 'zecmip')
+ZECMIP_LOCAL_REGRIDDED_DIR = os.path.join(ZECMIP_LOCAL_DIR, 'regridded')
 DECK_DIR = '/g/data/oi10/replicas/CMIP6/CMIP'
 MODULE_DIR = '/home/563/ab2313/Documents/zecmip_stabilisation_drafts/src'
 
@@ -91,6 +93,8 @@ VARIABLE_INFO = variables = {
 
 MULTI_WINDOW_RUN_PARAMS = dict(start_window = 11, end_window = 153, step_window=2)
 ZECMIP_MULTI_WINDOW_RUN_PARAMS = {'start_window': 10, 'end_window': 41, 'step_window': 1}
+ZECMIP_MULTI_WINDOW_PARAMS = {'start': 10, 'stop': 41, 'step': 1}
+
 
 # Windows that have interesing properties. These windows were decided upong from
 # the graphs of the year when models and variables stabailise in the global mean.

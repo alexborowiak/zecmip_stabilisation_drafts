@@ -271,7 +271,13 @@ def plot_all_coord_lines(da: xr.DataArray, coord='model', exp_type=None,
         params = MODEL_PROFILES[exp_type]
         coord_values = [cv for cv in list(params) if cv in coord_values]
 
-    
+    # Consensus needs to go first. So that it appears first in the legend
+    if consensus and len(coord_values) > 1:
+        ax.plot(time, da.median(dim=coord).values, 
+                alpha=kwargs['line_alpha'] if 'line_alpha' in kwargs else 1,
+                zorder=500, label='Median', linewidth=4,  
+                c='black')
+        
     for i, coord_value in enumerate(coord_values):
         logger.debug(f'{i=}, {coord_value=}')
 
@@ -296,10 +302,7 @@ def plot_all_coord_lines(da: xr.DataArray, coord='model', exp_type=None,
                 alpha=kwargs['line_alpha'] if 'line_alpha' in kwargs else 1,
                 zorder=zorder, label=coord_value, linewidth=linewidth,  linestyle=ls, 
                 c=c)
-    if consensus and len(coord_values) > 1: ax.plot(time, da.median(dim=coord).values,
-                alpha=kwargs['line_alpha'] if 'line_alpha' in kwargs else 1,
-                zorder=500, label='Median', linewidth=4,  
-                c='black')
+
     ax.grid(True, linestyle='--', color='gray', alpha=0.2)
 
     
@@ -308,7 +311,8 @@ def plot_all_coord_lines(da: xr.DataArray, coord='model', exp_type=None,
     if yticks_right is not None: ax.set_yticks(yticks_right)
     if len(coord_values) > 1 and add_legend:
         leg = ax.legend(ncol=ncol, bbox_to_anchor=bbox_to_anchor,
-                        fontsize=constants.PlotConfig.legend_text_size*font_scale)
+                        fontsize=kwargs.get('legend_fontsize', 12)*font_scale)
+        
         leg.set_title(coord.capitalize())
         leg.get_title().set_fontsize(constants.PlotConfig.legend_title_size*font_scale)
         
@@ -873,7 +877,8 @@ def map_plot_all_for_coords_3(da: xr.DataArray, levels: ArrayLike, dim: str=None
         logger.debug(da_to_use)
 
         # Create a filled contour plot on the current subplot (ax).
-        plot_kwargs = dict(ax=ax, transform=ccrs.PlateCarree(), cmap=cmap, levels=levels_to_use, extend=extend, add_colorbar=False)
+        plot_kwargs = dict(ax=ax, transform=ccrs.PlateCarree(), cmap=cmap, levels=levels_to_use, extend=extend,
+                           add_colorbar=False)
         if ptype == 'contourf': c = da_to_use.plot.contourf(**plot_kwargs)
         elif ptype == 'imshow': c = c = da_to_use.plot(**plot_kwargs)
         else: raise TypeError(f'ptype must be one of [contourf, imshow]. Entered {ptype=}')
@@ -896,7 +901,7 @@ def map_plot_all_for_coords_3(da: xr.DataArray, levels: ArrayLike, dim: str=None
             elif stabilisation_method == 'stipple':
                 plot_stippled_data(da_binary, ax)
             else:
-                raise ValueError(f'stabilisation_method must be one of [blackout, stipple]. Value entered: {stabilisation_method}')
+                raise ValueError(f'stabilisation_method must be one of [blackout, stipple]. Value entered {stabilisation_method}')
         utils.change_logginglevel(logginglevel)
         # Optionally, if `stipling_da` is provided, overlay stipple data on the plot.
         # The details of the `plot_stippled_data` function are not provided here.

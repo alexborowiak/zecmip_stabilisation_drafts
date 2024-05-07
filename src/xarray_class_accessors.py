@@ -201,10 +201,11 @@ class SignalToNoise:
             signal_da = data.rolling(time=window, min_periods=min_periods, center=center).reduce(
                 self.__grid_gradient, xs=xs, mean_xs=mean_xs, denominator=denominator) * window
     
-            # The rolling is applied in the start. Thus, the datasets need to be moved forewards or backwards
-            # depending on where we want it to start from
+            # The rolling is applied in the start. Thus, the datasets need to be moved forewards or
+            #backwards  depending on where we want it to start from
             if center == True:
-                signal_da = signal_da.sn.adjust_time_from_rolling(window=window, logginglevel=logginglevel)
+                signal_da = signal_da.sn.adjust_time_from_rolling(window=window,
+                                                                  logginglevel=logginglevel)
             else:
                 signal_da = signal_da.dropna(dim='time')
 

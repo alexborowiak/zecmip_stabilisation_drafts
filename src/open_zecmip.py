@@ -1,9 +1,11 @@
+import sys, os
 import json
 from pathlib import Path
 from functools import partial
 import xarray as xr
 
 import utils
+sys.path.append(os.path.join(os.getcwd(), 'Documents', 'list_xarray'))
 from listXarray import listXarray
 from typing import Dict, Optional, List
 
