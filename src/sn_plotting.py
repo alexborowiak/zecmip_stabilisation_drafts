@@ -816,10 +816,7 @@ def map_plot_all_for_coords_3(da: xr.DataArray, levels: ArrayLike, dim: str=None
     # Otherwise, if it's an object of type `listXarray`, use the mean of its `lon` values obtained from `single_xarray()`.
     central_longitude = int(np.mean(da.lon.values)) if isinstance(da, (xr.DataArray, xr.Dataset)) else int(np.mean(da.single_xarray().lon.values))
 
-    # Set the projection using the calculated central longitude.
-    # Note: The variable `projection` is being overwritten here, which might be an issue if it was defined before this point.
-    projection = projection(central_longitude=central_longitude)
-
+ 
     # Print the type of the input data for debugging purposes.
     logger.info(f'Input type = {type(da)}')
 
@@ -849,7 +846,7 @@ def map_plot_all_for_coords_3(da: xr.DataArray, levels: ArrayLike, dim: str=None
 
     # Create a list of subplots (axes) based on the number of plots calculated above.
     # If `axes` is already provided, use the existing list of axes.
-    axes = ([fig.add_subplot(gs[i], projection=projection) for i in range(0, num_plots)]
+    axes = ([fig.add_subplot(gs[i], projection=projection(central_longitude=central_longitude)) for i in range(0, num_plots)]
             if axes is None else axes)
 
     # Initialize a flag to keep track of whether the colorbar has been added already.
