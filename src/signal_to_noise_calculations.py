@@ -152,6 +152,7 @@ def rolling_signal(
     signal_da = signal_da.expand_dims('window').assign_coords(window=('window', [window]))
     return signal_da
 
+
 def rolling_noise(data, window:int, min_periods = 0,center=True,logginglevel='ERROR') -> xr.DataArray:
     
     utils.change_logging_level(logginglevel)
@@ -176,6 +177,7 @@ def rolling_noise(data, window:int, min_periods = 0,center=True,logginglevel='ER
     noise_da = noise_da.expand_dims('window').assign_coords(window=('window', [window]))
     
     return noise_da
+
 
 
 def signal_to_noise_ratio(
@@ -297,6 +299,7 @@ def signal_to_noise_ratio_bounds_multi_window(
 
 
 
+
 def multi_window_func(
     func,
     ds, 
@@ -317,6 +320,8 @@ def multi_window_func(
     """
     logginglevel = kwargs.pop('logginglevel', 'ERROR')
     utils.change_logginglevel(logginglevel)
+
+    logger.debug(f'Multi window func - applying function {func}')
 
     # Using dask delayed or not?
     func = dask.delayed(func) if parallel else signal_to_noise_ratio
