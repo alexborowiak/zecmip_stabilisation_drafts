@@ -9,7 +9,7 @@ ZECMIP_LOCAL_DIR = os.path.join(PHD_ROOT_DIR, 'zecmip')
 ZECMIP_LOCAL_REGRIDDED_DIR = os.path.join(ZECMIP_LOCAL_DIR, 'regridded')
 DECK_DIR = '/g/data/oi10/replicas/CMIP6/CMIP'
 MODULE_DIR = '/home/563/ab2313/Documents/zecmip_stabilisation_drafts/src'
-
+ZECMIP_STABILISATION_DIR = '/g/data/w40/ab2313/zecmip_stabilisation'
 
 class PlotConfig(NamedTuple):
     title_size = 20
